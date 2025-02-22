@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Premium Payment - Razorpay 💳</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            padding: 50px;
+            color: #fff;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            backdrop-filter: blur(10px);
+            animation: slideIn 1.5s ease-in-out;
+            width: 90%;
+            max-width: 400px;
+        }
+        .emoji {
+            font-size: 70px;
+            margin-bottom: 10px;
+            animation: bounce 1.5s infinite;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            transition: all 0.3s;
+            text-align: center;
+            animation: inputFadeIn 1s ease-in-out;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            outline: none;
+        }
+        input:focus {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.3);
+        }
+        button {
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 22px;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 20px rgba(255, 126, 95, 0.4);
+            animation: buttonPop 1.5s ease-in-out;
+            width: 100%;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #ff6a5f, #fd9068);
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="emoji">💳💰🔒</div>
+        <h1>Premium Payment Experience</h1>
+        <p>Enter your details & payment amount to proceed! 🚀</p>
+        <input type="text" id="name" placeholder="Enter Your Name" required>
+        <input type="email" id="email" placeholder="Enter Your Email" required>
+        <input type="tel" id="contact" placeholder="Enter Your Contact" required>
+        <input type="number" id="amount" placeholder="Enter Amount (INR)" required>
+        <br>
+        <button id="pay-btn">Proceed to Pay 💸</button>
+    </div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        document.getElementById('pay-btn').addEventListener('click', function () {
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+            var contact = document.getElementById('contact').value;
+            var amount = document.getElementById('amount').value;
+            
+            if (!name || !email || !contact || !amount) {
+                alert("⚠️ Please fill all details before proceeding!");
+                return;
+            }
+            
+            var options = {
+                "key": "rzp_live_0BRsQQyMa8G1VC", // Razorpay Key ID
+                "amount": amount * 100, // Amount in paisa (INR * 100)
+                "currency": "INR",
+                "name": name,
+                "description": "Premium Subscription",
+                "image": "https://yourlogo.com/logo.png",
+                "handler": function (response) {
+                    alert("✅ Payment Successful! Payment ID: " + response.razorpay_payment_id);
+                    sendInvoice(email, response.razorpay_payment_id, amount);
+                },
+                "prefill": {
+                    "name": name,
+                    "email": email,
+                    "contact": contact
+                },
+                "theme": {
+                    "color": "#ff7e5f"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        });
+
+        function sendInvoice(email, paymentId, amount) {
+            fetch('https://api.razorpay.com/v1/invoices', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic ' + btoa('YOUR_KEY_ID:YOUR_KEY_SECRET')
+                },
+                body: JSON.stringify({
+                    type: "invoice",
+                    customer: {
+                        email: email
+                    },
+                    line_items: [{
+                        name: "Premium Subscription",
+                        amount: amount * 100,
+                        currency: "INR",
+                        quantity: 1
+                    }],
+                    payment_id: paymentId
+                })
+            })
+            .then(response => response.json())
+            .then(data => alert("📧 Invoice Sent to " + email))
+            .catch(error => console.error('Error sending invoice:', error));
+        }
+    </script>
+</body>
+</html>
