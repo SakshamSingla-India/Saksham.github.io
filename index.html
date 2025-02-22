@@ -9,7 +9,7 @@
         body {
             font-family: 'Inter', sans-serif;
             text-align: center;
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
             padding: 50px;
             color: #fff;
             animation: fadeIn 1.5s ease-in-out;
@@ -17,7 +17,7 @@
         .container {
             background: rgba(255, 255, 255, 0.1);
             padding: 30px;
-            border-radius: 15px;
+            border-radius: 20px;
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
             display: inline-block;
             backdrop-filter: blur(10px);
@@ -32,10 +32,10 @@
         }
         input {
             width: 100%;
-            padding: 12px;
+            padding: 15px;
             margin: 10px 0;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 18px;
             transition: all 0.3s;
             text-align: center;
@@ -49,7 +49,7 @@
             background: rgba(255, 255, 255, 0.3);
         }
         button {
-            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            background: linear-gradient(90deg, #ff6a95, #ff91a4);
             color: white;
             border: none;
             padding: 15px 30px;
@@ -57,13 +57,33 @@
             cursor: pointer;
             border-radius: 30px;
             transition: all 0.3s ease-in-out;
-            box-shadow: 0 4px 20px rgba(255, 126, 95, 0.4);
+            box-shadow: 0 4px 20px rgba(255, 106, 149, 0.4);
             animation: buttonPop 1.5s ease-in-out;
             width: 100%;
         }
         button:hover {
-            background: linear-gradient(90deg, #ff6a5f, #fd9068);
+            background: linear-gradient(90deg, #ff578b, #ff759d);
             transform: scale(1.1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes inputFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes buttonPop {
+            from { transform: scale(0.9); }
+            to { transform: scale(1); }
         }
     </style>
 </head>
@@ -110,7 +130,7 @@
                     "contact": contact
                 },
                 "theme": {
-                    "color": "#ff7e5f"
+                    "color": "#ff6a95"
                 }
             };
             var rzp1 = new Razorpay(options);
